@@ -3,213 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STREET VAULT | OFFICIAL</title>
+    <title>STREET VAULT | FULL COLLECTION</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;700;900&display=swap');
-        :root { --red: #ef4444; }
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; overflow-x: hidden; }
-        .font-black-italic { font-family: 'Archivo Black', sans-serif; font-style: italic; text-transform: uppercase; letter-spacing: -2px; }
-        .reveal { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Grotesk:wght@300;500;700&display=swap');
+        :root { --neon: #ccff00; --bg: #080808; }
+        body { background-color: var(--bg); color: white; font-family: 'Space Grotesk', sans-serif; }
+        .font-header { font-family: 'Syncopate', sans-serif; }
         
-        .product-card { background: #0a0a0a; border: 1px solid #111; border-radius: 2rem; padding: 1rem; cursor: pointer; transition: 0.3s; }
-        .product-card:hover { border-color: var(--red); transform: translateY(-5px); }
-        
-        .cat-btn { padding: 0.6rem 1.5rem; border-radius: 12px; background: #111; border: 1px solid #222; font-size: 11px; font-weight: 900; text-transform: uppercase; transition: 0.3s; cursor: pointer; }
-        .cat-btn.active { background: var(--red); border-color: var(--red); color: white; }
+        .vault-card { background: #121212; border-radius: 20px; padding: 15px; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.3s; }
+        .vault-card:hover { border-color: var(--neon); transform: translateY(-5px); }
+        .img-box { background: #000; border-radius: 15px; height: 180px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; overflow: hidden; }
+        .img-box img { max-height: 90%; max-width: 90%; object-fit: contain; }
 
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(20px); }
-        .modal-overlay.active { display: flex; }
-        
-        #cart-sidebar { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 400px; background: #000; border-left: 1px solid #222; transform: translateX(100%); transition: 0.5s; z-index: 11000; padding: 2rem; }
-        #cart-sidebar.open { transform: translateX(0); }
-        
-        .size-btn { border: 1px solid #222; padding: 0.7rem; border-radius: 12px; min-width: 60px; background: #111; color: #666; font-weight: 900; }
-        .size-btn.selected { background: var(--red); border-color: var(--red); color: white; }
-        .logo-glow { text-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
+        .filter-pill { padding: 8px 16px; border-radius: 100px; background: #1a1a1a; font-size: 0.7rem; font-weight: 700; border: 1px solid transparent; transition: 0.3s; }
+        .filter-pill.active { background: var(--neon); color: black; }
+
+        #cart-panel { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 400px; background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(20px); z-index: 10000; transform: translateX(100%); transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); border-left: 1px solid rgba(255,255,255,0.1); }
+        #cart-panel.open { transform: translateX(0); }
+
+        #rules-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 20000; align-items: center; justify-content: center; padding: 20px; }
+        .rules-box { background: #111; border: 1px solid var(--neon); padding: 30px; border-radius: 25px; max-width: 450px; width: 100%; }
+
+        .btn-neon { background: var(--neon); color: black; font-weight: 900; text-transform: uppercase; border-radius: 12px; transition: 0.3s; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 
-    <nav class="p-6 border-b border-white/5 flex justify-between items-center sticky top-0 bg-black/80 backdrop-blur-xl z-[9000]">
-        <a href="https://www.tiktok.com/@street_vault1?_r=1&_t=ZS-943cuasOn0n" target="_blank" class="bg-white/5 p-3 rounded-xl hover:text-red-600">
-            <i class="fab fa-tiktok text-xl"></i>
-        </a>
-        <div class="text-4xl font-black-italic italic cursor-pointer logo-glow" onclick="location.reload()">STREET<span class="text-red-600">VAULT</span></div>
-        <button onclick="toggleCart()" class="relative bg-white/5 p-4 rounded-2xl border border-white/10">
+    <header class="p-6 flex justify-between items-center sticky top-0 z-[9000] bg-black/80 backdrop-blur-md border-b border-white/5">
+        <div class="font-header text-xl tracking-tighter uppercase">STREET<span class="text-[#ccff00]">VAULT</span></div>
+        <button onclick="toggleCart()" class="bg-white/5 w-12 h-12 rounded-xl flex items-center justify-center relative active:scale-90 transition">
             <i class="fas fa-shopping-bag"></i>
-            <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] h-5 w-5 rounded-full flex items-center justify-center font-black">0</span>
+            <span id="cart-badge" class="absolute -top-1 -right-1 bg-[#ccff00] text-black text-[10px] font-black h-5 w-5 rounded-full flex items-center justify-center">0</span>
         </button>
-    </nav>
+    </header>
 
-    <div class="container mx-auto px-6 mt-6">
-        <div class="w-full h-48 md:h-64 bg-zinc-900 rounded-[2.5rem] flex items-center justify-center relative overflow-hidden border border-white/5">
-            <div class="absolute inset-0 bg-gradient-to-r from-red-600/20 to-transparent"></div>
-            <div class="text-center z-10">
-                <h1 class="text-4xl md:text-6xl font-black-italic italic">NEW SEASON</h1>
-                <p class="text-zinc-400 font-black italic mt-2 tracking-widest uppercase">Streetwear drops 2026</p>
+    <div class="container mx-auto px-6 pt-8">
+        <div class="flex gap-3 overflow-x-auto no-scrollbar pb-4">
+            <button onclick="filterCat('all')" id="pill-all" class="filter-pill active">ALL</button>
+            <button onclick="filterCat('clothing')" id="pill-clothing" class="filter-pill">CLOTHING</button>
+            <button onclick="filterCat('shoes')" id="pill-shoes" class="filter-pill">SHOES</button>
+            <button onclick="filterCat('accessories')" id="pill-accessories" class="filter-pill">ACCESSORIES</button>
+        </div>
+    </div>
+
+    <main id="main-grid" class="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4 py-6"></main>
+
+    <div id="cart-panel">
+        <div class="p-8 h-full flex flex-col">
+            <h2 class="font-header text-lg mb-8 italic">MY BAG</h2>
+            <div id="cart-items" class="flex-1 overflow-y-auto space-y-4 no-scrollbar"></div>
+            <div class="pt-6 border-t border-white/10 mt-auto">
+                <div class="flex justify-between text-xl font-header mb-6">
+                    <span>TOTAL</span><span id="cart-total" class="text-[#ccff00]">0 ₾</span>
+                </div>
+                <button onclick="showRules()" class="btn-neon w-full py-5 text-xs tracking-widest">PROCEED TO ORDER</button>
             </div>
         </div>
     </div>
 
-    <div class="container mx-auto px-6 mt-8 flex gap-3 overflow-x-auto pb-4 no-scrollbar">
-        <button onclick="filterCat('all')" class="cat-btn active" id="cat-all">ALL ITEMS</button>
-        <button onclick="filterCat('shoes')" class="cat-btn" id="cat-shoes">SHOES</button>
-        <button onclick="filterCat('clothing')" class="cat-btn" id="cat-clothing">CLOTHING</button>
-        <button onclick="filterCat('accessories')" class="cat-btn" id="cat-accessories">ACCESSORIES</button>
-    </div>
-
-    <div class="container mx-auto px-6 mt-4">
-        <input type="text" id="search-bar" oninput="handleSearch()" placeholder="SEARCH..." class="w-full bg-[#0a0a0a] border border-[#222] p-5 rounded-3xl text-center italic uppercase outline-none focus:border-red-600 transition">
-    </div>
-
-    <main id="product-grid" class="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 py-12"></main>
-
-    <div id="size-modal" class="modal-overlay">
-        <div class="bg-zinc-950 p-10 rounded-[2rem] border border-white/10 text-center max-w-sm w-full">
-            <h2 id="modal-product-name" class="text-xl font-black italic mb-6 uppercase">SELECT SIZE</h2>
-            <div id="size-container" class="flex flex-wrap gap-2 justify-center mb-8"></div>
-            <button onclick="confirmAddToCart()" class="w-full bg-white text-black py-4 rounded-2xl font-black italic hover:bg-red-600 hover:text-white transition uppercase">ADD TO BAG</button>
-            <button onclick="closeModals()" class="mt-4 text-zinc-500 text-xs font-black uppercase">Close</button>
-        </div>
-    </div>
-
-    <div id="cart-sidebar">
-        <div class="flex justify-between items-center mb-10 text-2xl font-black italic"><h2>BAG</h2><button onclick="toggleCart()">&times;</button></div>
-        <div id="cart-items" class="space-y-4 overflow-y-auto max-h-[60vh]"></div>
-        <div class="absolute bottom-10 left-0 w-full px-8">
-            <div class="flex justify-between text-xl font-black italic mb-6"><span>TOTAL:</span><span id="total-price" class="text-red-600">0 ₾</span></div>
-            <button onclick="openPayment()" class="w-full bg-red-600 py-5 rounded-2xl font-black italic uppercase">Checkout</button>
-        </div>
-    </div>
-
-    <div id="payment-modal" class="modal-overlay">
-        <div class="bg-zinc-950 p-10 rounded-[2rem] border border-white/10 w-full max-w-md text-center">
-            <h2 class="text-2xl font-black italic mb-8 uppercase">Payment</h2>
-            <div class="space-y-4 text-left">
-                <div onclick="finishOrder('BANK')" class="p-5 border border-zinc-800 rounded-2xl cursor-pointer hover:border-red-600">
-                    <p class="font-black italic uppercase">BANK TRANSFER</p>
-                    <p class="text-[10px] text-zinc-500 mt-1 uppercase">GE27BG0000000602667920 / Andria Zazikashvili</p>
-                </div>
-                <div onclick="finishOrder('COD')" class="p-5 border border-zinc-800 rounded-2xl cursor-pointer hover:border-red-600">
-                    <p class="font-black italic uppercase">CASH ON DELIVERY</p>
-                    <p class="text-[10px] text-zinc-500 mt-1 uppercase">Pay on delivery</p>
+    <div id="rules-modal">
+        <div class="rules-box">
+            <div class="text-[#ccff00] text-2xl mb-6 font-header italic">ORDER RULES</div>
+            <div class="space-y-4 text-zinc-300 text-[13px] leading-relaxed mb-8">
+                <p>• მიწოდება ხდება შეკვეთიდან <span class="text-white font-bold">15 დღეში</span> (მაქსიმუმ 20 დღე).</p>
+                <p>• ჩამოსვლის შემდეგ მიწოდება საჭიროებს <span class="text-white">3 დღეს</span>.</p>
+                <p>• თბილისის მასშტაბით მიტანის საფასურია <span class="text-white font-bold">+10 ლარი</span>.</p>
+                <p>• <span class="text-[#ccff00] font-bold">150₾ +</span> შეკვეთაზე მიტანა უფასოა!</p>
+                
+                <div class="bg-red-500/10 p-4 rounded-xl border border-red-500/20 mt-4 text-[11px]">
+                    <p class="text-red-400 font-bold uppercase mb-1 underline">ყურადღება:</p>
+                    სანამ თანხა არ ჩაირიცხება ანგარიშზე და სქრინი არ გამოიგზავნება WhatsApp-ზე (568 890 514), შეკვეთა არ გაფორმდება.
                 </div>
             </div>
-            <button onclick="closeModals()" class="mt-6 text-zinc-500 font-black">BACK</button>
+            <button onclick="finalSend()" class="btn-neon w-full py-4 text-xs mb-3 italic">ვეთანხმები წესებს</button>
+            <button onclick="hideRules()" class="w-full text-zinc-600 text-[10px] font-bold uppercase">დაბრუნება</button>
+        </div>
+    </div>
+
+    <div id="prod-modal" class="fixed inset-0 bg-black/95 z-[20000] hidden items-center justify-center p-4">
+        <div class="bg-[#111] w-full max-w-md rounded-[2.5rem] p-8 border border-white/10 relative">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-zinc-500 text-xl">&times;</button>
+            <img id="modal-img" src="" class="h-44 mx-auto mb-6 object-contain">
+            <h2 id="modal-title" class="text-xl font-header text-center mb-2 uppercase"></h2>
+            <p id="modal-desc" class="text-zinc-500 text-[11px] text-center mb-6 px-4 uppercase leading-tight"></p>
+            <div id="size-box" class="flex flex-wrap justify-center gap-2 mb-8"></div>
+            <button onclick="addToCart()" class="btn-neon w-full py-4 mb-4">Add to Bag</button>
         </div>
     </div>
 
     <script>
-        const J=['28','30','32','34','36'], S=['S','M','L','XL'], SH=['37','38','39','40','41','42','43','44','45'], UN=['120','140','160','180'];
-        
+        // ზომების მასივები
+        const XS_S = ['XS','S','M','L','XL'], S = ['S','M','L','XL'], J = ['28','30','32','34','36'], SH = ['40','41','42','43','44','45'], PSD = ['120','140','160','180'], UN = ['ONE SIZE'];
+
+        // სრული პროდუქციის სია ფაილიდან
         const products = [
-            { id: 101, name: "Yeezy Orange", price: 30, img: "https://i.postimg.cc/PLhqhsv4/71acbd87-b343-49fc-8aa1-d083c5298107.jpg", sizes: SH, cat: 'shoes' },
-            { id: 125, name: "Yeezy Slides Blue", price: 35, img: "https://i.postimg.cc/rsMd2WSd/d79789f3-fcca-41e8-9764-31c01ac9acff-(1).jpg", sizes: SH, cat: 'shoes' },
-            { id: 102, name: "Lanvin T-shirt", price: 30, img: "https://i.postimg.cc/8JXkh7KK/326dfc1f-84d7-453d-bea5-27bf17e18e82.jpg", sizes: S, cat: 'clothing' },
-            { id: 103, name: "Bape T-shirt", price: 25, img: "https://i.postimg.cc/sQgDQYcH/33c1ac71-cc51-4401-90ce-54f219b8fbc4.jpg", sizes: S, cat: 'clothing' },
-            { id: 119, name: "Orange Denim Tears", price: 40, img: "https://i.postimg.cc/TLN2rK7S/cf5d11b1-f887-47dd-a4b6-73a1fd6e4738.jpg", sizes: S, cat: 'clothing' },
-            { id: 104, name: "Polo New York", price: 40, img: "https://i.postimg.cc/8JzPJRHY/3ff3aee6-d214-43f6-96ea-163f0ab50f12.jpg", sizes: S, cat: 'clothing' },
-            { id: 105, name: "Polo Paris", price: 35, img: "https://i.postimg.cc/jwSdwHX9/4903fcaa-c9a9-4576-9e0a-82b716d69358.jpg", sizes: J, cat: 'clothing' },
-            { id: 106, name: "Corteiz T-shirt", price: 30, img: "https://i.postimg.cc/DJwyJrg9/55d3b000-feb0-4a8a-86eb-91582729918a.jpg", sizes: S, cat: 'clothing' },
-            { id: 107, name: "PSD Underwear", price: 15, img: "https://i.postimg.cc/06fyyWpd/5dae114f-4d7c-4418-99fd-b2a24c220f68.jpg", sizes: UN, cat: 'accessories' },
-            { id: 109, name: "PSD Green", price: 15, img: "https://i.postimg.cc/yg8YgmPJ/63af07af-8468-4147-b2dc-cce53feee535.jpg", sizes: UN, cat: 'accessories' },
-            { id: 114, name: "PSD Pink", price: 15, img: "https://i.postimg.cc/06fyyWp7/8e98ecaf-1c02-4b21-8b3c-e8a284ca49e0.jpg", sizes: UN, cat: 'accessories' },
-            { id: 111, name: "Eric Emanuel Shorts", price: 25, img: "https://i.postimg.cc/sQgDQYc7/78e20ba8-fee7-403d-a567-c689c9012c0a.jpg", sizes: S, cat: 'clothing' },
-            { id: 116, name: "Denim Tears Floral", price: 40, img: "https://i.postimg.cc/wy4xh14K/97ba90ec-cf62-4939-9413-63e9ac241582.jpg", sizes: S, cat: 'clothing' },
-            { id: 121, name: "Gallery Dept Tee", price: 45, img: "https://i.postimg.cc/xJpjKXx6/e6462811-11d2-43a4-a4f7-405197312616.jpg", sizes: S, cat: 'clothing' },
-            { id: 123, name: "Gallery Dept Shorts", price: 35, img: "https://i.postimg.cc/vg28W4q2/ee180eef-de96-4b03-902c-4a4d8a23c0e3.jpg", sizes: S, cat: 'clothing' },
-            { id: 1, name: "Amiri Distressed Jeans", price: 50, img: "https://i.postimg.cc/MfK0jw8W/19a887407b0ac88ba88bae2570a7f12f.webp", sizes: J, cat: 'clothing' },
-            { id: 2, name: "Purple Brand Jeans", price: 60, img: "https://i.postimg.cc/hQP87nqc/1AB59E103E617.webp", sizes: J, cat: 'clothing' },
-            { id: 3, name: "Corteiz Alcatraz Hoodie", price: 55, img: "https://i.postimg.cc/1V50NSZP/Corteiz-Hoodie.jpg", sizes: S, cat: 'clothing' },
-            { id: 4, name: "Burberry Check Shorts", price: 45, img: "https://i.postimg.cc/tnCdVbHq/08-12-2021-RC-8040598-A7028-1-1.jpg", sizes: S, cat: 'clothing' },
-            { id: 5, name: "Sp5der Hoodie blue", price: 45, img: "https://i.postimg.cc/D4yQbhKy/m-65e4c6847dfcc2b108f19f21.jpg", sizes: S, cat: 'clothing' },
-            { id: 6, name: "Denim Tears Grey", price: 45, img: "https://i.postimg.cc/dZtRTFKD/OIP-(3).webp", sizes: S, cat: 'clothing' },
-            { id: 7, name: "Denim Tears Black", price: 45, img: "https://i.postimg.cc/BPQ513Gj/OIP-(4).webp", sizes: S, cat: 'clothing' },
-            { id: 8, name: "Sp5der Hoodie Black", price: 45, img: "https://i.postimg.cc/DJcdZZRz/Sp5der-Spider-Hoodie-Black-1-1-2048x2048-2.jpg", sizes: S, cat: 'clothing' },
-            { id: 9, name: "Lanvin Leather Black", price: 110, img: "https://i.postimg.cc/m2ysFTLV/c574e165-43cc-4766-8e73-b4aa3744e7a8.jpg", sizes: SH, cat: 'shoes' },
-            { id: 10, name: "Lanvin Leather White", price: 110, img: "https://i.postimg.cc/7ZLZH533/FM-SKRK11-DRA2-A2000-1-2048x2048.webp", sizes: SH, cat: 'shoes' },
-            { id: 11, name: "Trapstar Mini Bag", price: 30, img: "https://i.postimg.cc/hhyT3HBk/19e1f124-5652-4946-8bf9-890c2089d168.jpg", sizes: ['One Size'], cat: 'accessories' },
-            { id: 12, name: "Trapstar Jacket", price: 40, img: "https://i.postimg.cc/xqxMFWQr/25fcf485-f857-4ed1-bc2e-4366b5c33258.jpg", sizes: S, cat: 'clothing' },
-            { id: 16, name: "Air Jordan 11", price: 200, img: "https://i.postimg.cc/6y8nsYWP/e5048d16-6308-4a92-92c4-c19f51634389-Copy.jpg", sizes: SH, cat: 'shoes' },
-            { id: 21, name: "C.P. Company Hat", price: 25, img: "https://i.postimg.cc/fy0LYyWQ/1683644454-cp-company-hat-black-seoi8sh1-(1).avif", sizes: ['Adjustable'], cat: 'accessories' },
-            { id: 22, name: "Stone Island Sweater", price: 40, img: "https://i.postimg.cc/kXm6WNSF/stone.webp", sizes: S, cat: 'clothing' },
-            { id: 23, name: "Transparent Glass", price: 18, img: "https://i.postimg.cc/QCV6mLvB/025b7fab-7fd9-410e-a958-d338fedcd212.jpg", sizes: ['Standard'], cat: 'accessories' },
-            { id: 24, name: "Nike Ski Mask", price: 20, img: "https://i.postimg.cc/bvyyCsJN/BTKA-16842471251584294-2c831bc3a992c09d85f98087d91863.webp", sizes: ['One Size'], cat: 'accessories' },
-            { id: 124, name: "Chanel Style Cap", price: 15, img: "https://i.postimg.cc/ygp6FDp4/fe7392b9-debb-4c89-9502-519f438deb5b.jpg", sizes: ['One Size'], cat: 'accessories' }
+            { id: 401, name: "Syna World Green", price: 40, img: "https://i.postimg.cc/Z0d6X19r/Screenshot-2026-02-20-092046.png", sizes: XS_S, cat: 'clothing', desc: "Full tracksuit set. Premium tech fleece." },
+            { id: 402, name: "Syna World Black", price: 35, img: "https://i.postimg.cc/YjWQTJ4F/Screenshot-2026-02-20-092126.png", sizes: XS_S, cat: 'clothing', desc: "Signature edition graphic tee." },
+            { id: 403, name: "Syna World Blue Short", price: 40, img: "https://i.postimg.cc/BtLC4jzM/Screenshot-2026-02-20-091947.png", sizes: XS_S, cat: 'clothing', desc: "Summer mesh shorts." },
+            { id: 404, name: "Syna World Gray Short", price: 40, img: "https://i.postimg.cc/Dm9PZ2VL/Screenshot-2026-02-20-091959.png", sizes: XS_S, cat: 'clothing', desc: "Comfort fit daily shorts." },
+            { id: 405, name: "Syna World White Short", price: 40, img: "https://i.postimg.cc/G98jd4fM/Screenshot-2026-02-20-092009.png", sizes: XS_S, cat: 'clothing', desc: "Essential white aesthetic." },
+            { id: 406, name: "Syna World Black Short", price: 40, img: "https://i.postimg.cc/23s76zpn/Screenshot-2026-02-20-092031.png", sizes: XS_S, cat: 'clothing', desc: "Dark mode streetwear shorts." },
+            { id: 407, name: "Syna World Pink Short", price: 40, img: "https://i.postimg.cc/ThLcfKs0/Screenshot-2026-02-20-092119.png", sizes: XS_S, cat: 'clothing', desc: "Exclusive pink edition." },
+            { id: 408, name: "Syna World Bag", price: 35, img: "https://i.postimg.cc/ThDnBZyn/Screenshot-2026-02-20-092107.png", sizes: UN, cat: 'accessories', desc: "Syna signature side bag." },
+            { id: 411, name: "Polo white", price: 35, img: "https://i.postimg.cc/wyf2jJXC/Screenshot-2026-02-20-095943.png", sizes: XS_S, cat: 'clothing', desc: "Classic fit polo knit." },
+            { id: 412, name: "Polo blue", price: 35, img: "https://i.postimg.cc/ygQj89mt/Screenshot-2026-02-20-095956.png", sizes: UN, cat: 'accessories', desc: "Signature white cap." },
+            { id: 413, name: "Polo yellow", price: 35, img: "https://i.postimg.cc/ygQj89m2/Screenshot-2026-02-20-100005.png", sizes: UN, cat: 'accessories', desc: "Classic black icon cap." },
+            { id: 414, name: "Polo black", price: 35, img: "https://i.postimg.cc/mzXjgM3x/Screenshot-2026-02-20-100014.png", sizes: UN, cat: 'accessories', desc: "Forest green icon cap." },
+            { id: 104, name: "Polo New York", price: 40, img: "https://i.postimg.cc/8JzPJRHY/3ff3aee6-d214-43f6-96ea-163f0ab50f12.jpg", sizes: S, cat: 'clothing', desc: "NYC limited city edition." },
+            { id: 105, name: "Polo Paris", price: 35, img: "https://i.postimg.cc/jwSdwHX9/4903fcaa-c9a9-4576-9e0a-82b716d69358.jpg", sizes: J, cat: 'clothing', desc: "European street style." },
+            { id: 415, name: "Neymar Tee White", price: 35, img: "https://i.postimg.cc/9R8bQTPh/Screenshot-2026-02-20-100125.png", sizes: XS_S, cat: 'clothing', desc: "NJR 10 signature tee." },
+            { id: 416, name: "Neymar Tee Pink", price: 35, img: "https://i.postimg.cc/2bcGSvdY/Screenshot-2026-02-20-100217.png", sizes: XS_S, cat: 'clothing', desc: "Special Neymar pink drop." },
+            { id: 421, name: "Ronaldo Tee", price: 35, img: "https://i.postimg.cc/XGHLYFKv/Screenshot-2026-02-20-100711.png", sizes: XS_S, cat: 'clothing', desc: "CR7 Legend series." },
+            { id: 417, name: "Corteiz Heat 1", price: 20, img: "https://i.postimg.cc/YGnRCgNM/Screenshot-2026-02-20-100533.png", sizes: XS_S, cat: 'clothing', desc: "RTW essential tee." },
+            { id: 418, name: "Corteiz Heat 2", price: 20, img: "https://i.postimg.cc/gXSs2Ryc/Screenshot-2026-02-20-100539.png", sizes: XS_S, cat: 'clothing', desc: "Alcatraz logo print." },
+            { id: 419, name: "Corteiz Heat 3", price: 20, img: "https://i.postimg.cc/62jcpRV5/Screenshot-2026-02-20-100545.png", sizes: XS_S, cat: 'clothing', desc: "Streetwear drip." },
+            { id: 106, name: "Corteiz Black Tee", price: 30, img: "https://i.postimg.cc/DJwyJrg9/55d3b000-feb0-4a8a-86eb-91582729918a.jpg", sizes: S, cat: 'clothing', desc: "Classic Alcatraz tee." },
+            { id: 3, name: "Corteiz Hoodie", price: 55, img: "https://i.postimg.cc/1V50NSZP/Corteiz-Hoodie.jpg", sizes: S, cat: 'clothing', desc: "Heavyweight cotton hoodie." },
+            { id: 107, name: "PSD Underwear Blue", price: 15, img: "https://i.postimg.cc/06fyyWpd/5dae114f-4d7c-4418-99fd-b2a24c220f68.jpg", sizes: PSD, cat: 'accessories', desc: "Premium comfort boxers." },
+            { id: 109, name: "PSD Green", price: 15, img: "https://i.postimg.cc/yg8YgmPJ/63af07af-8468-4147-b2dc-cce53feee535.jpg", sizes: PSD, cat: 'accessories', desc: "Graphic athletic print." },
+            { id: 114, name: "PSD Pink", price: 15, img: "https://i.postimg.cc/06fyyWp7/8e98ecaf-1c02-4b21-8b3c-e8a284ca49e0.jpg", sizes: PSD, cat: 'accessories', desc: "Bold pink edition." },
+            { id: 422, name: "Diesel Belt", price: 40, img: "https://i.postimg.cc/30kB4R9T/Screenshot-2026-02-20-100932.png", sizes: UN, cat: 'accessories', desc: "Luxury leather D-belt." },
+            { id: 11, name: "Trapstar Bag", price: 30, img: "https://i.postimg.cc/hhyT3HBk/19e1f124-5652-4946-8bf9-890c2089d168.jpg", sizes: UN, cat: 'accessories', desc: "Irongate cross-body bag." },
+            { id: 24, name: "Nike Ski Mask", price: 20, img: "https://i.postimg.cc/bvyyCsJN/BTKA-16842471251584294-2c831bc3a992c09d85f98087d91863.webp", sizes: UN, cat: 'accessories', desc: "Hyperwarm tech mask." },
+            { id: 124, name: "Chanel Cap", price: 15, img: "https://i.postimg.cc/ygp6FDp4/fe7392b9-debb-4c89-9502-519f438deb5b.jpg", sizes: UN, cat: 'accessories', desc: "Premium fashion cap." },
+            { id: 23, name: "Glass Accessory", price: 18, img: "https://i.postimg.cc/QCV6mLvB/025b7fab-7fd9-410e-a958-d338fedcd212.jpg", sizes: UN, cat: 'accessories', desc: "Transparent lifestyle piece." },
+            { id: 116, name: "Denim Tears Floral", price: 40, img: "https://i.postimg.cc/wy4xh14K/97ba90ec-cf62-4939-9413-63e9ac241582.jpg", sizes: S, cat: 'clothing', desc: "Signature floral wreath tee." },
+            { id: 119, name: "Orange Denim Tears", price: 40, img: "https://i.postimg.cc/TLN2rK7S/cf5d11b1-f887-47dd-a4b6-73a1fd6e4738.jpg", sizes: S, cat: 'clothing', desc: "Vibrant orange drop." },
+            { id: 6, name: "Denim Tears Gray", price: 45, img: "https://i.postimg.cc/dZtRTFKD/OIP-(3).webp", sizes: S, cat: 'clothing', desc: "Grey cotton wreath hoodie." },
+            { id: 7, name: "Denim Tears Black", price: 45, img: "https://i.postimg.cc/BPQ513Gj/OIP-(4).webp", sizes: S, cat: 'clothing', desc: "Classic black wreath hoodie." },
+            { id: 5, name: "Sp5der Blue", price: 45, img: "https://i.postimg.cc/D4yQbhKy/m-65e4c6847dfcc2b108f19f21.jpg", sizes: S, cat: 'clothing', desc: "Spider web sky blue hoodie." },
+            { id: 8, name: "Sp5der Black", price: 45, img: "https://i.postimg.cc/DJcdZZRz/Sp5der-Spider-Hoodie-Black-1-1-2048x2048-2.jpg", sizes: S, cat: 'clothing', desc: "Dark spider web design." },
+            { id: 1, name: "Amiri Distressed", price: 50, img: "https://i.postimg.cc/MfK0jw8W/19a887407b0ac88ba88bae2570a7f12f.webp", sizes: J, cat: 'clothing', desc: "High-end distressed denim." },
+            { id: 2, name: "Purple Brand", price: 60, img: "https://i.postimg.cc/hQP87nqc/1AB59E103E617.webp", sizes: J, cat: 'clothing', desc: "Designer skinny fit denim." },
+            { id: 22, name: "Stone Island", price: 40, img: "https://i.postimg.cc/kXm6WNSF/stone.webp", sizes: S, cat: 'clothing', desc: "Iconic compass badge sweater." },
+            { id: 121, name: "Gallery Dept Tee", price: 45, img: "https://i.postimg.cc/xJpjKXx6/e6462811-11d2-43a4-a4f7-405197312616.jpg", sizes: S, cat: 'clothing', desc: "Artistic splash design tee." },
+            { id: 123, name: "Gallery Dept Shorts", price: 35, img: "https://i.postimg.cc/vg28W4q2/ee180eef-de96-4b03-902c-4a4d8a23c0e3.jpg", sizes: S, cat: 'clothing', desc: "Casual luxury shorts." },
+            { id: 111, name: "Eric Emanuel", price: 25, img: "https://i.postimg.cc/sQgDQYc7/78e20ba8-fee7-403d-a567-c689c9012c0a.jpg", sizes: S, cat: 'clothing', desc: "Classic EE mesh shorts." },
+            { id: 102, name: "Lanvin T-shirt", price: 30, img: "https://i.postimg.cc/8JXkh7KK/326dfc1f-84d7-453d-bea5-27bf17e18e82.jpg", sizes: S, cat: 'clothing', desc: "Luxury logo print tee." },
+            { id: 103, name: "Bape T-shirt", price: 25, img: "https://i.postimg.cc/sQgDQYcH/33c1ac71-cc51-4401-90ce-54f219b8fbc4.jpg", sizes: S, cat: 'clothing', desc: "Original ape head graphic." },
+            { id: 9, name: "Lanvin Black", price: 110, img: "https://i.postimg.cc/m2ysFTLV/c574e165-43cc-4766-8e73-b4aa3744e7a8.jpg", sizes: SH, cat: 'shoes', desc: "Curb chunky lace sneaker." },
+            { id: 10, name: "Lanvin White", price: 110, img: "https://i.postimg.cc/7ZLZH533/FM-SKRK11-DRA2-A2000-1-2048x2048.webp", sizes: SH, cat: 'shoes', desc: "Clean white luxury leather." },
+            { id: 101, name: "Yeezy Slides Orange", price: 30, img: "https://i.postimg.cc/PLhqhsv4/71acbd87-b343-49fc-8aa1-d083c5298107.jpg", sizes: SH, cat: 'shoes', desc: "Pure comfort foam slides." },
+            { id: 125, name: "Yeezy Slides Blue", price: 35, img: "https://i.postimg.cc/rsMd2WSd/d79789f3-fcca-41e8-9764-31c01ac9acff-(1).jpg", sizes: SH, cat: 'shoes', desc: "Azure blue Yeezy drop." },
+            { id: 16, name: "Air Jordan 11", price: 200, img: "https://i.postimg.cc/6y8nsYWP/e5048d16-6308-4a92-92c4-c19f51634389-Copy.jpg", sizes: SH, cat: 'shoes', desc: "Retro High Concord OG." }
         ];
 
-        let cart = [], tempProduct = null, selectedSize = '';
+        let cart = [], selectedProd = null, selectedSize = null, currentCat = 'all';
 
-        function renderProducts(items = products) {
-            document.getElementById('product-grid').innerHTML = items.map((p, i) => `
-                <div class="product-card reveal" style="animation-delay: ${i * 0.05}s" onclick="openSizeModal(${p.id})">
-                    <img src="${p.img}" class="w-full h-56 object-cover rounded-[1.5rem] mb-4">
-                    <p class="text-[11px] text-zinc-500 uppercase font-black italic mb-1">${p.name}</p>
-                    <p class="text-xl font-black italic text-white">${p.price} ₾</p>
+        function render(items = products) {
+            document.getElementById('main-grid').innerHTML = items.map(p => `
+                <div class="vault-card" onclick="openModal(${p.id})">
+                    <div class="img-box"><img src="${p.img}"></div>
+                    <h3 class="text-[10px] font-bold uppercase truncate">${p.name}</h3>
+                    <span class="text-[#ccff00] font-bold text-sm">${p.price} ₾</span>
                 </div>
             `).join('');
         }
 
-        function filterCat(cat) {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('cat-' + cat).classList.add('active');
-            renderProducts(cat === 'all' ? products : products.filter(p => p.cat === cat));
+        function filterCat(c) {
+            currentCat = c;
+            document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+            document.getElementById('pill-' + c).classList.add('active');
+            render(c === 'all' ? products : products.filter(p => p.cat === c));
         }
 
-        function handleSearch() {
-            const q = document.getElementById('search-bar').value.toLowerCase();
-            renderProducts(products.filter(p => p.name.toLowerCase().includes(q)));
-        }
-
-        function openSizeModal(id) {
-            tempProduct = products.find(p => p.id === id);
-            selectedSize = '';
-            document.getElementById('modal-product-name').innerText = tempProduct.name;
-            document.getElementById('size-container').innerHTML = tempProduct.sizes.map(s => `
-                <button onclick="selectSize(this, '${s}')" class="size-btn">${s}</button>
+        function openModal(id) {
+            selectedProd = products.find(p => p.id === id);
+            selectedSize = null;
+            document.getElementById('modal-img').src = selectedProd.img;
+            document.getElementById('modal-title').innerText = selectedProd.name;
+            document.getElementById('modal-desc').innerText = selectedProd.desc;
+            document.getElementById('size-box').innerHTML = selectedProd.sizes.map(s => `
+                <button onclick="selectSize(this, '${s}')" class="px-4 py-2 border border-white/10 rounded-lg text-xs hover:border-[#ccff00] text-white">${s}</button>
             `).join('');
-            document.getElementById('size-modal').classList.add('active');
+            document.getElementById('prod-modal').style.display = 'flex';
         }
 
         function selectSize(btn, s) {
-            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected'); selectedSize = s;
+            document.querySelectorAll('#size-box button').forEach(b => { b.style.borderColor = 'rgba(255,255,255,0.1)'; b.style.color = 'white'; });
+            btn.style.borderColor = '#ccff00'; btn.style.color = '#ccff00';
+            selectedSize = s;
         }
 
-        function confirmAddToCart() {
-            if(!selectedSize) return alert("Select size!");
-            cart.push({...tempProduct, selectedSize});
-            updateCartUI(); closeModals(); toggleCart();
+        function addToCart() {
+            if(!selectedSize) return alert('აირჩიეთ ზომა!');
+            cart.push({...selectedProd, size: selectedSize});
+            updateCart();
+            closeModal();
         }
 
-        function updateCartUI() {
-            document.getElementById('cart-count').innerText = cart.length;
-            document.getElementById('total-price').innerText = cart.reduce((s,i)=>s+i.price, 0) + " ₾";
+        function updateCart() {
+            document.getElementById('cart-badge').innerText = cart.length;
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cart-total').innerText = total + " ₾";
             document.getElementById('cart-items').innerHTML = cart.map((item, i) => `
-                <div class="flex items-center gap-4 bg-zinc-900 p-4 rounded-2xl">
-                    <img src="${item.img}" class="w-12 h-12 object-cover rounded-lg">
-                    <div class="flex-1 uppercase font-black italic text-[10px]">
-                        <p>${item.name}</p><p class="text-red-600">SIZE: ${item.selectedSize}</p>
-                    </div>
-                    <button onclick="cart.splice(${i},1); updateCartUI()">&times;</button>
+                <div class="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
+                    <img src="${item.img}" class="w-10 h-10 object-contain">
+                    <div class="flex-1 text-left"><h4 class="text-[9px] font-bold uppercase">${item.name}</h4><p class="text-[#ccff00] text-[10px]">${item.size} — ${item.price}₾</p></div>
+                    <button onclick="cart.splice(${i}, 1); updateCart()" class="text-zinc-600">&times;</button>
                 </div>
             `).join('');
         }
 
-        function finishOrder(m) {
-            const items = cart.map(i => `${i.name} (${i.selectedSize})`).join('%0A- ');
-            window.open(`https://wa.me/995568890514?text=STREET_VAULT_ORDER%0A- ${items}%0A%0ATotal: ${cart.reduce((s,i)=>s+i.price, 0)}₾%0AMethod: ${m}`);
+        function toggleCart() { document.getElementById('cart-panel').classList.toggle('open'); }
+        function closeModal() { document.getElementById('prod-modal').style.display = 'none'; }
+        function showRules() { if(cart.length > 0) document.getElementById('rules-modal').style.display = 'flex'; }
+        function hideRules() { document.getElementById('rules-modal').style.display = 'none'; }
+
+        function finalSend() {
+            const itemsText = cart.map(i => `• ${i.name} [${i.size}]`).join('%0A');
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            const message = `*STREET VAULT | ORDER*%0A%0A*Items:*%0A${itemsText}%0A%0A*Total:* ${total} ₾%0A%0A*BOG DETAILS:*%0Aანდრია ზაზიკაშვილი%0A*GE27BG0000000602667920*%0A%0A⚠️ გადმოაგზავნეთ სქრინი!`;
+            window.open(`https://wa.me/995568890514?text=${message}`, '_blank');
+            hideRules();
         }
 
-        function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('open'); }
-        function closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); }
-        function openPayment() { if(cart.length) document.getElementById('payment-modal').classList.add('active'); }
-
-        window.onload = () => renderProducts();
+        render();
     </script>
 </body>
 </html>
